@@ -2,12 +2,15 @@ package com.philippathefusionworks.mylabdaemonapp_v2;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 import android.os.Bundle;
 
 import com.philippathefusionworks.mylabdaemonapp_v2.models.Action;
 import com.philippathefusionworks.mylabdaemonapp_v2.models.ActionList;
 import com.philippathefusionworks.mylabdaemonapp_v2.services.ApiService;
 import com.philippathefusionworks.mylabdaemonapp_v2.retrofit.RetroClient;
+import com.philippathefusionworks.mylabdaemonapp_v2.utils.InternetConnection;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,37 +31,48 @@ public class MainActivity extends AppCompatActivity {
 
     protected void loadActionsData(){
 
-       final ProgressDialog dialog;
+        if (InternetConnection.checkConnection(getApplicationContext())) {
+            final ProgressDialog dialog;
 
-        /**
-         * Progress Dialog for User Interaction
-         */
-        dialog = new ProgressDialog(MainActivity.this);
-        dialog.setTitle("Getting JSON data");
-        dialog.setMessage("Please wait...");
-        dialog.show();
+            /**
+             * Progress Dialog for User Interaction
+             */
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setTitle("Getting JSON data");
+            dialog.setMessage("Please wait...");
+            dialog.show();
 
-        //Creating an object of our api interface
-        ApiService api = RetroClient.getApiService();
+            //Creating an object of our api interface
+            ApiService api = RetroClient.getApiService();
 
-        Call<ActionList> call = api.getActions();
+            Call<ActionList> call = api.getActions();
 
-        call.enqueue(new Callback<ActionList>() {
-            @Override
-            public void onResponse(Call<ActionList> call, Response<ActionList> response) {
-                dialog.dismiss();
+            call.enqueue(new Callback<ActionList>() {
+                @Override
+                public void onResponse(Call<ActionList> call, Response<ActionList> response) {
+                    dialog.dismiss();
 
-                if(response.isSuccessful()) {
+                    if(response.isSuccessful()) {
 
-                    actionList = response.body().getActions();
+                        actionList = response.body().getActions();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ActionList> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ActionList> call, Throwable t) {
+                   // toastMessage("Failure: " + t.getMessage());
+                    dialog.setMessage("Failure: " + t.getMessage());
+                }
+            });
+        } else {
+            toastMessage("Check your internet connection!");
+        }
 
-            }
-        });
 
+
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
