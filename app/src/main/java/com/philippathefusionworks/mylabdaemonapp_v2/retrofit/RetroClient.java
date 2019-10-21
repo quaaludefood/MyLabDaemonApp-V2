@@ -12,12 +12,12 @@ public class RetroClient {
 
     private String urlDEBUG = "http://jsonplaceholder.typicode.com/";
     private String urlDEBUGLOCAL = "http://192.168.0.6:44337/api/";
-    // Work local = "http://192.168.1.165:64618/api/";
+    // Work local = "http://192.168.1.165:52477/api/";
    // Home local = "http://192.168.0.6:44337/api/";
     private String urlLIVE = "http://mylabdaemon.thefusion.works/api/";
 
 
-    private static final String ROOT_URL = "http://192.168.0.6:44337/api/";
+    private static final String ROOT_URL = "http://192.168.1.165:52477/api/";
 
     private static Retrofit getRetrofitInstance() {
 
