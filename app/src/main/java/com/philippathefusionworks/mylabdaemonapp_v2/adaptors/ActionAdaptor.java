@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.philippathefusionworks.mylabdaemonapp_v2.R;
@@ -14,10 +16,28 @@ import com.philippathefusionworks.mylabdaemonapp_v2.database.entity.Action;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionAdaptor extends RecyclerView.Adapter<ActionAdaptor.ActionHolder> {
+public class ActionAdaptor extends ListAdapter<Action, ActionAdaptor.ActionHolder> {
 
-    private List<Action> actions = new ArrayList<>();
     private OnItemClickListener listener;
+
+    public ActionAdaptor() {
+            super(DIFF_CALLBACK);
+    }
+
+    private static final DiffUtil.ItemCallback<Action> DIFF_CALLBACK = new DiffUtil.ItemCallback<Action>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Action oldItem, @NonNull Action newItem) {
+
+            return oldItem.getIdentifier() == newItem.getIdentifier();
+        }
+        //If it returns false the adaptor will know it needs to update the item
+        @Override
+        public boolean areContentsTheSame(@NonNull Action oldItem, @NonNull Action newItem) {
+            return oldItem.getIdentifier() == newItem.getIdentifier() &&
+           oldItem.getName().equals(newItem.getName()) &&
+            oldItem.getActive().equals(newItem.getActive());
+        }
+    };
 
     @NonNull
     @Override
@@ -30,29 +50,16 @@ public class ActionAdaptor extends RecyclerView.Adapter<ActionAdaptor.ActionHold
     //Populate the holder with properties from the action
     @Override
     public void onBindViewHolder(@NonNull ActionHolder holder, int position) {
-        Action currentaction = actions.get(position);
+        Action currentaction = getItem(position);
         holder.textViewName.setText(currentaction.getName());
         holder.textViewActive.setText(currentaction.getActive().toString());
     }
 
-    @Override
-    public int getItemCount() {
-        //We want to return all the items in the list
-        return actions.size();
-    }
 
-    //In main activity we observe the live data, and get passed a list of notes. This gets that list into the recyclerview!
-    public void setActions(List<Action> actions){
-        this.actions = actions;
-        //Not the most efficient method but will use for now
-        notifyDataSetChanged();
-    }
 
     //This helps determine which action to delete  when the Viewmodel is swiped
     public Action getActionAt(int position){
-        int yyy = 1;
-        Action xxx = actions.get(yyy);
-        return actions.get(yyy);
+        return getItem(position);
     }
 
     class ActionHolder extends RecyclerView.ViewHolder
@@ -71,7 +78,7 @@ public class ActionAdaptor extends RecyclerView.Adapter<ActionAdaptor.ActionHold
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if(listener != null && position != RecyclerView.NO_POSITION)
-                    listener.onItemClick(actions.get(position));
+                    listener.onItemClick(getItem(position));
                 }
             });
         }

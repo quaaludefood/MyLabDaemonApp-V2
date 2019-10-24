@@ -48,9 +48,9 @@ public class AddActionActivity extends AppCompatActivity {
         {
             setTitle("Edit Action");
             editTextName.setText(intent.getStringExtra(EXTRA_NAME));
-           // editActive.setChecked(parseBoolean(intent.getStringExtra(EXTRA_ACTIVE));
-            Boolean xxx = Boolean.parseBoolean(intent.getStringExtra(EXTRA_ACTIVE));
-            editActive.setChecked(xxx);
+          // String yyy =  intent.getStringExtra(EXTRA_ACTIVE);
+          //  Boolean xxx = Boolean.parseBoolean(intent.getStringExtra(EXTRA_ACTIVE));
+            editActive.setSelected(Boolean.parseBoolean(intent.getStringExtra(EXTRA_ACTIVE)));
         }
         else
         {

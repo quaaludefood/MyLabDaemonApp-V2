@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         actionViewModel.getAllActions().observe(this, new Observer<List<com.philippathefusionworks.mylabdaemonapp_v2.database.entity.Action>>() {
             @Override
             public void onChanged(@Nullable List<com.philippathefusionworks.mylabdaemonapp_v2.database.entity.Action> actions) {
-                adaptor.setActions(actions);
+                adaptor.submitList(actions);
             }
         });
     //Parse it the values of what type of touch we listen for
