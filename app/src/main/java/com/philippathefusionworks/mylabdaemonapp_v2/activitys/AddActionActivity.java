@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -24,13 +25,13 @@ public class AddActionActivity extends AppCompatActivity {
             "com.philippathefusionworks.mylabdaemonapp_v2.EXTRA_NAME";
 
 
-    public static final String EXTRA_ACTIVE =
-            "com.philippathefusionworks.mylabdaemonapp_v2.EXTRA_ACTIVE";
+  public static final String EXTRA_ACTIVE = "com.philippathefusionworks.mylabdaemonapp_v2.EXTRA_ACTIVE";
 
 
+   // public static final Boolean EXTRA_ACTIVE = true;
 
     private EditText editTextName;
-    private RadioButton editActive;
+    private CheckBox editActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +49,8 @@ public class AddActionActivity extends AppCompatActivity {
         {
             setTitle("Edit Action");
             editTextName.setText(intent.getStringExtra(EXTRA_NAME));
-          // String yyy =  intent.getStringExtra(EXTRA_ACTIVE);
-          //  Boolean xxx = Boolean.parseBoolean(intent.getStringExtra(EXTRA_ACTIVE));
-            editActive.setSelected(Boolean.parseBoolean(intent.getStringExtra(EXTRA_ACTIVE)));
+            editActive.setChecked(intent.getBooleanExtra(EXTRA_ACTIVE, false));
+
         }
         else
         {
@@ -58,6 +58,7 @@ public class AddActionActivity extends AppCompatActivity {
         }
 
     }
+
 
     private void saveAction(){
         String name = editTextName.getText().toString();
