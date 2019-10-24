@@ -25,6 +25,10 @@ public class Action {
         Identifier = identifier;
     }
 
+    public String getActive() {
+        return String.valueOf(Active);
+    }
+
     public boolean isActive() {
         return Active;
     }
